@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {Container,Sidebar,NavItem,Main,Header,Title,TopBarIcons,FilterButtons,FilterButton,CardContainer,Card,ChartContainer,PieChart,LineChart} from './styles';
 import { FaHome, FaMap, FaTrash, FaBars } from 'react-icons/fa';
 import { FiBell, FiUser, FiLogOut } from 'react-icons/fi';
@@ -7,6 +8,7 @@ type FilterType = '30 Dias' | '60 Dias' | '90 Dias' | '12 Meses';
 type NavItemType = 'home' | 'map' | 'trash' | 'menu';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<FilterType>('30 Dias');
   const [activeNav, setActiveNav] = useState<NavItemType>('home');
 
@@ -16,6 +18,10 @@ const Dashboard = () => {
 
   const handleNavClick = (navName: NavItemType) => {
     setActiveNav(navName);
+  };
+
+  const handleLogout = () => {
+    navigate('/login');
   };
 
   const PieChartContent = () => <div className="chart-content">Pie Chart Placeholder</div>;
@@ -48,7 +54,7 @@ const Dashboard = () => {
           <TopBarIcons>
             <FiBell />
             <FiUser />
-            <FiLogOut />
+            <FiLogOut onClick={handleLogout} style={{ cursor: 'pointer' }} />
           </TopBarIcons>
         </Header>
 
