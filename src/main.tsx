@@ -1,8 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import Dashboard from '../src/pages/Dashboard'
-
-
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
+import Login from './pages/Login'
 
 const globalStyle = document.createElement('style')
 globalStyle.innerHTML = `
@@ -18,6 +18,12 @@ document.head.appendChild(globalStyle)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Dashboard />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )
