@@ -1,9 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Container,Sidebar,NavItem,Main,Header,Title,TopBarIcons,FilterButtons,FilterButton,CardContainer,Card,ChartContainer,PieChart,LineChart, ContentWrapper, FilterButtonRow, DashboardRow,NotificationsModal} from './styles';
+import {
+  Container, Sidebar, NavItem, Main, Header, Title, TopBarIcons, FilterButtons, FilterButton,
+  CardContainer, Card, ChartContainer, PieChart, LineChart, ContentWrapper, FilterButtonRow,
+  DashboardRow, NotificationsModal
+} from './styles';
 import { FaHome, FaMap, FaTrash, FaBars } from 'react-icons/fa';
 import { FiBell, FiUser, FiLogOut } from 'react-icons/fi';
 import Profile from '../Profile';
+import Trash from '../Trash';
+import Users from '../Users'; // Importe o componente de usuários
 
 type FilterType = '30 Dias' | '60 Dias' | '90 Dias' | '12 Meses';
 type NavItemType = 'home' | 'map' | 'trash' | 'menu';
@@ -14,6 +20,8 @@ const Dashboard = () => {
   const [activeNav, setActiveNav] = useState<NavItemType>('home');
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showTrash, setShowTrash] = useState(false);
+  const [showUsers, setShowUsers] = useState(false); // Novo estado
   const notifRef = useRef<HTMLDivElement>(null);
 
   const handleFilterClick = (filterName: FilterType) => {
@@ -52,19 +60,43 @@ const Dashboard = () => {
     <Container>
       <Sidebar>
         <div className="logo">
-          <img src="src/assets/brand.svg"/>
+          <img src="src/assets/brand.svg" />
         </div>
         <nav>
-          <NavItem active={activeNav === 'home'} onClick={() => handleNavClick('home')}>
+          <NavItem
+            active={activeNav === 'home'}
+            onClick={() => {
+              setShowProfile(false);
+              setShowTrash(false);
+              setShowUsers(false); // Garante que a tela de usuários não apareça
+              setActiveNav('home');
+            }}
+          >
             <FaHome />
           </NavItem>
           <NavItem active={activeNav === 'map'} onClick={() => handleNavClick('map')}>
             <FaMap />
           </NavItem>
-          <NavItem active={activeNav === 'trash'} onClick={() => handleNavClick('trash')}>
+          <NavItem
+            active={activeNav === 'trash'}
+            onClick={() => {
+              setShowTrash(true);
+              setShowProfile(false);
+              setShowUsers(false);
+              setActiveNav('trash');
+            }}
+          >
             <FaTrash />
           </NavItem>
-          <NavItem active={activeNav === 'menu'} onClick={() => handleNavClick('menu')}>
+          <NavItem
+            active={activeNav === 'menu'}
+            onClick={() => {
+              setShowUsers(true);
+              setShowProfile(false);
+              setShowTrash(false);
+              setActiveNav('menu');
+            }}
+          >
             <FaBars />
           </NavItem>
         </nav>
@@ -102,6 +134,10 @@ const Dashboard = () => {
         <ContentWrapper>
           {showProfile ? (
             <Profile onClose={() => setShowProfile(false)} />
+          ) : showTrash ? (
+            <Trash onBack={() => setShowTrash(false)} />
+          ) : showUsers ? (
+            <Users />
           ) : (
             <>
               <FilterButtons>
