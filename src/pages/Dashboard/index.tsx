@@ -1,15 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container, Sidebar, NavItem, Main, Header, Title, TopBarIcons, FilterButtons, FilterButton,
-  CardContainer, Card, ChartContainer, PieChart, LineChart, ContentWrapper, FilterButtonRow,
-  DashboardRow, NotificationsModal
-} from './styles';
+import {Container, Sidebar, NavItem, Main, Header, Title, TopBarIcons, FilterButtons, FilterButton,CardContainer, Card, ChartContainer, PieChart, LineChart, ContentWrapper, FilterButtonRow,DashboardRow, NotificationsModal} from '@pages/Dashboard/styles';
 import { FaHome, FaMap, FaTrash, FaBars } from 'react-icons/fa';
 import { FiBell, FiUser, FiLogOut } from 'react-icons/fi';
-import Profile from '../Profile';
-import Trash from '../Trash';
-import Users from '../Users'; // Importe o componente de usuários
+import Profile from '@pages/Profile';
+import Trash from '@pages/Trash';
+import Users from '@pages/Users';
 
 type FilterType = '30 Dias' | '60 Dias' | '90 Dias' | '12 Meses';
 type NavItemType = 'home' | 'map' | 'trash' | 'menu';

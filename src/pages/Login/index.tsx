@@ -1,7 +1,8 @@
-import "./styles.css";
-import logo from "../../assets/logo.png";
-import loginimage from "../../assets/login-image.png";
+import "@pages/Login/styles.css";
+import logo from "@assets/logo.png";
+import loginimage from "@assets/login-image.png";
 import { useNavigate } from "react-router-dom";
+import GreenButton from '@components/GreenButton';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -28,9 +29,9 @@ export default function Login() {
           <div className="form-group">
             <input type="password" placeholder="Senha" className="input" required />
           </div>
-          <button type="submit" className="submit-button">
+          <GreenButton type="submit">
             Entrar
-          </button>
+          </GreenButton>
         </form>
       </div>
       <div
