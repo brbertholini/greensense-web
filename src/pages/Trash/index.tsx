@@ -1,6 +1,7 @@
 import React from 'react';
 import { TrashContainer, TrashHeader, TrashList, TrashItem, TrashStatus, TrashActions, TrashButton } from './styles';
 import { FiEye, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import GreenButton from '@components/GreenButton';
 
 const trashData = [
   { id: 'lx001231', type: 'Lixeira', status: 'Nível Baixo', statusColor: '#44AA00' },
@@ -13,7 +14,7 @@ const Trash: React.FC<{ onBack: () => void }> = ({ onBack }) => (
   <TrashContainer>
     <TrashHeader>
       <span>Gerenciamento de Lixeiras e Caçambas</span>
-      <TrashButton>Cadastrar Nova Lixeira</TrashButton>
+      <TrashButton as={GreenButton}>Cadastrar Nova Lixeira</TrashButton>
     </TrashHeader>
     <TrashList>
       {trashData.map((item) => (

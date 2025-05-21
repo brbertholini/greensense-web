@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  ProfileContainer, Content, TopBar, Title, Card, CardHeader, Form, Label, InputWrapper, Input, EyeButton, CardFooter, SaveButton, BackButton 
-} from './styles';
+import { ProfileContainer, Content, TopBar, Title, Card, CardHeader, Form, Label, InputWrapper, Input, EyeButton, CardFooter, SaveButton, BackButton } from '@pages/Profile/styles';
 import { FiArrowLeft } from 'react-icons/fi';
 
 const Profile: React.FC<{ onClose: () => void }> = ({ onClose }) => {
