@@ -2,7 +2,7 @@ import { Modal } from '../../components/Modal';
 import React, { useEffect, useState } from 'react';
 import {
   TrashContainer, TrashHeader, TrashList, TrashItem, TrashStatus,
-  TrashActions, TrashButton, Input
+  TrashActions, Input
 } from './styles';
 
 import { FiEye, FiEdit2, FiTrash2 } from 'react-icons/fi';
@@ -10,42 +10,12 @@ import { lixeiraService } from '../../services/lixeiraService';
 import type { Lixeira } from '../../services/lixeiraService';
 import GreenButton from '../../components/GreenButton';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const statusColors: { [key: string]: string } = {
   'ativo': '#44AA00',
   'inativo': '#444',
 };
-
-const lixeirasIniciais: Omit<Lixeira, 'id'>[] = [
-  {
-    tipo: 'Lixeira',
-    endereco: 'Rua Caçador Narciso, 136',
-    capacidadeMaxima: 120,
-    statusSensor: true,
-    sensorId: 'sensor-4f9e2d',
-  },
-  {
-    tipo: 'Lixeira',
-    endereco: 'Rua das Flores, 200',
-    capacidadeMaxima: 100,
-    statusSensor: true,
-    sensorId: 'sensor-1a2b3c',
-  },
-  {
-    tipo: 'Caçamba',
-    endereco: 'Avenida Brasil, 500',
-    capacidadeMaxima: 500,
-    statusSensor: true,
-    sensorId: 'sensor-7h8j9k',
-  },
-  {
-    tipo: 'Lixeira',
-    endereco: 'Rua das Acácias, 50',
-    capacidadeMaxima: 90,
-    statusSensor: false,
-    sensorId: 'sensor-x9y8z7',
-  },
-];
 
 const Trash: React.FC = () => {
   const [lixeiras, setLixeiras] = useState<Lixeira[]>([]);
@@ -54,56 +24,78 @@ const Trash: React.FC = () => {
   const [capacidade, setCapacidade] = useState('');
   const [sensorId, setSensorId] = useState('');
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentEditId, setCurrentEditId] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const carregarLixeiras = async () => {
     const data = await lixeiraService.listar();
     setLixeiras(data);
-
-    if (data.length === 0) {
-      for (const lixeira of lixeirasIniciais) {
-        await lixeiraService.cadastrar(lixeira);
-      }
-      const atualizadas = await lixeiraService.listar();
-      setLixeiras(atualizadas);
-    }
   };
 
-  const handleCadastrar = async (e: React.FormEvent) => {
+  const handleEditar = (lixeira: Lixeira) => {
+    setTipo(lixeira.tipo);
+    setEndereco(lixeira.endereco);
+    setCapacidade(lixeira.capacidadeMaxima.toString());
+    setSensorId(lixeira.sensorId);
+    setCurrentEditId(lixeira.id);
+    setIsEditing(true);
+    setOpenModal(true);
+  };
+
+  const handleSalvar = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!tipo || !endereco || !capacidade || !sensorId) return;
-  
-    await lixeiraService.cadastrar({
+
+    const payload = {
       tipo,
       endereco,
       capacidadeMaxima: parseInt(capacidade),
       statusSensor: true,
       sensorId,
-    });
-  
-    setOpenModal(false); // Fecha o modal antes
-  
+    };
+
+    if (isEditing && currentEditId) {
+      await lixeiraService.atualizar(currentEditId, payload);
+    } else {
+      await lixeiraService.cadastrar(payload);
+    }
+
+    setOpenModal(false);
     setTipo('');
     setEndereco('');
     setCapacidade('');
     setSensorId('');
-  
+    setIsEditing(false);
+    setCurrentEditId(null);
+
     await carregarLixeiras();
-  
-    // Alerta de sucesso
+
     Swal.fire({
       icon: 'success',
-      title: 'Cadastrado com sucesso!',
+      title: isEditing ? 'Atualizado com sucesso!' : 'Cadastrado com sucesso!',
       showConfirmButton: false,
       timer: 1500,
     });
   };
-  
-
 
   const handleExcluir = async (id: string) => {
-    await lixeiraService.excluir(id);
-    await carregarLixeiras();
+    const result = await Swal.fire({
+      title: 'Tem certeza?',
+      text: 'Essa ação não poderá ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir',
+      cancelButtonText: 'Cancelar',
+    });
+
+    if (result.isConfirmed) {
+      await lixeiraService.excluir(id);
+      await carregarLixeiras();
+      Swal.fire('Excluído!', 'A lixeira foi removida.', 'success');
+    }
   };
 
   useEffect(() => {
@@ -115,14 +107,23 @@ const Trash: React.FC = () => {
       <TrashHeader>
         <span>Gerenciamento de Lixeiras e Caçambas</span>
         <Modal
-          title="Cadastrar Lixeira"
-          triggerLabel="Cadastrar Nova Lixeira"
+          title={isEditing ? 'Editar Lixeira' : 'Cadastrar Lixeira'}
+          triggerLabel={isEditing ? 'Editar Lixeira' : 'Cadastrar Nova Lixeira'}
           open={openModal}
-          onOpenChange={setOpenModal}
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsEditing(false);
+              setCurrentEditId(null);
+              setTipo('');
+              setEndereco('');
+              setCapacidade('');
+              setSensorId('');
+            }
+            setOpenModal(open);
+          }}
         >
-          <form onSubmit={handleCadastrar}>
+          <form onSubmit={handleSalvar}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {/* Inputs */}
               <Input
                 placeholder="Tipo (Lixeira ou Caçamba)"
                 value={tipo}
@@ -148,18 +149,17 @@ const Trash: React.FC = () => {
                 onChange={(e) => setSensorId(e.target.value)}
                 required
               />
-              <GreenButton type="submit">Cadastrar</GreenButton>
+              <GreenButton type="submit">{isEditing ? 'Atualizar' : 'Cadastrar'}</GreenButton>
             </div>
           </form>
         </Modal>
       </TrashHeader>
+
       <TrashList>
         {lixeiras.map((item) => (
           <TrashItem key={item.id}>
             <div>
-              <strong>
-                {item.tipo} - {item.endereco}
-              </strong>
+              <strong>{item.tipo} - {item.endereco}</strong>
               <TrashStatus style={{ background: item.statusSensor ? statusColors['ativo'] : statusColors['inativo'] }}>
                 {item.statusSensor ? 'Ativo' : 'Não rastreável'}
               </TrashStatus>
@@ -168,10 +168,10 @@ const Trash: React.FC = () => {
               Sensor: {item.sensorId} • Capacidade: {item.capacidadeMaxima}kg
             </div>
             <TrashActions>
-              <button title="Visualizar">
+              <button title="Visualizar" onClick={() => navigate(`/trash/${item.id}`)}>
                 <FiEye />
               </button>
-              <button title="Editar">
+              <button title="Editar" onClick={() => handleEditar(item)}>
                 <FiEdit2 />
               </button>
               <button title="Excluir" onClick={() => handleExcluir(item.id)}>

@@ -25,6 +25,11 @@ export const lixeiraService = {
     return response.data;
   },
 
+  atualizar: async (id: string, lixeira: Omit<Lixeira, 'id'>): Promise<Lixeira> => {
+    const response = await api.put(`/lixeiras/${id}`, lixeira);
+    return response.data;
+  },
+
   excluir: async (id: string) => {
     await api.delete(`/lixeiras/${id}`);
   },
