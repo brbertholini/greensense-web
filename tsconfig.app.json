@@ -26,12 +26,12 @@
     /* Paths */
     "baseUrl": "./src",
     "paths": {
-      "@pages/*": ["pages/*"],
-      "@components/*": ["components/*"],
-      "@assets/*": ["assets/*"],
-      "@styles/*": ["pages/*/styles"],
-      "@utils/*": ["utils/*"]
-    }
+    "@pages/*": ["pages/*"],
+    "@components/*": ["components/*"],
+    "@assets/*": ["assets/*"],
+    "@contexts/*": ["contexts/*"], 
+    "@services/*": ["services/*"]
+  }
   },
   "include": ["src"]
 }

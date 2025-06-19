@@ -1,8 +1,27 @@
 import React, { useState } from 'react';
-import { ProfileContainer, Content, TopBar, Title, Card, CardHeader, Form, Label, InputWrapper, Input, EyeButton, CardFooter, SaveButton, BackButton } from '@pages/Profile/styles';
+import { useNavigate } from 'react-router-dom';
+import {
+  ProfileContainer,
+  Content,
+  TopBar,
+  Title,
+  Card,
+  CardHeader,
+  Form,
+  Label,
+  InputWrapper,
+  Input,
+  EyeButton,
+  CardFooter,
+  SaveButton,
+  BackButton
+} from '@pages/Profile/styles';
+
 import { FiArrowLeft } from 'react-icons/fi';
 
-const Profile: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const Profile: React.FC = () => {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [showPassword3, setShowPassword3] = useState(false);
@@ -12,7 +31,7 @@ const Profile: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       <Content>
         <Title>Editar Perfil</Title>
         <TopBar>
-          <BackButton onClick={onClose}>
+          <BackButton onClick={() => navigate(-1)}>
             <FiArrowLeft size={20} style={{ marginRight: 10 }} />
             Voltar
           </BackButton>

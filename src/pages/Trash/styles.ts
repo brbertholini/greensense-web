@@ -17,6 +17,25 @@ export const TrashHeader = styled.div`
   font-size: 17px;
 `;
 
+export const Input = styled.input`
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #121214;
+  color: #fff;
+  font-size: 14px;
+
+  &::placeholder {
+    color: #aaa;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #44AA00;
+  }
+`;
+
+
 export const TrashButton = styled.button`
   background: #44AA00;
   color: #fff;

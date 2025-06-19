@@ -8,6 +8,31 @@ export const UsersContainer = styled.div`
   flex-direction: column;
 `;
 
+export const Input = styled.input`
+  width: 80%;
+  padding: 8px 36px 8px 12px;
+  border-radius: 20px;
+  border: 1.5px solid #C0BCBC;
+  background: transparent;
+  color: #E0E0E0;
+  font-size: 14px;
+  outline: none;
+  margin-top: 8px;
+`;
+
+export const Label = styled.label`
+  color: #C0BCBC;
+  font-family: 'Arial', sans-serif;
+  font-size: 13px;
+`;
+
+export const Form = styled.form`
+  padding: 18px 16px 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+`;
+
 export const UsersHeader = styled.div`
   display: flex;
   justify-content: space-between;

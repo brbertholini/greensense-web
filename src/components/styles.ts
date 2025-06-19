@@ -2,10 +2,6 @@ import styled, { css } from 'styled-components';
 
 const shouldForwardProp = (prop: string) => !['active'].includes(prop);
 
-interface FilterButtonProps {
-  active?: boolean;
-}
-
 interface NavItemProps {
   active?: boolean;
 }
@@ -17,7 +13,7 @@ export const Container = styled.div`
   color: #E0E0E0;
   font-family: 'Arial', sans-serif;
   margin: 0;
-  overflow-x: hidden;
+  overflow: hidden; // 🔥 Remove qualquer scroll horizontal
 `;
 
 export const Sidebar = styled.aside`
@@ -88,26 +84,6 @@ export const Main = styled.main`
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #444;
-    border-radius: 8px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #666;
-  }
 `;
 
 export const Header = styled.header`
@@ -117,12 +93,6 @@ export const Header = styled.header`
   background-color: #202024;
   padding: 24px 40px 24px 24px;
   width: 100%;
-`;
-
-export const Title = styled.h1`
-  font-size: 24px;
-  color: #F0F0F0;
-  font-weight: normal;
 `;
 
 export const TopBarIcons = styled.div`
@@ -144,147 +114,17 @@ export const TopBarIcons = styled.div`
   }
 `;
 
-export const FilterButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #202024;
-  border-radius: 16px;
-  margin-top: 80px;
-  margin-bottom: 40px;
-  padding: 20px 32px 24px 32px;
-  width: 100%;
-  max-width: 700px;
-  box-sizing: border-box;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-`;
-
-export const FilterButtonRow = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  border: 2px solid #44AA00;
-  border-radius: 12px;
-  background: transparent;
-  overflow: hidden;
-`;
-
-export const FilterButton = styled.button.withConfig({ shouldForwardProp })<FilterButtonProps>`
-  flex: 1;
-  padding: 12px 0;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  outline: none;
-  background: ${({ active }) => (active ? '#44AA00' : 'transparent')};
-  color: ${({ active }) => (active ? '#fff' : '#E0E0E0')};
-  transition: background 0.2s, color 0.2s;
-  cursor: pointer;
-
-  &:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
-  &:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-`;
-
-export const CardContainer = styled.div`
-  display: flex;
-  gap: 32px;
-  width: 100%;
-  justify-content: center;
-  max-width: 1100px;
-  flex-wrap: wrap;
-`;
-
-export const Card = styled.div`
-  background-color: #202024;
-  padding: 29px 24px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 220px;
-  min-width: 200px;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  h3 {
-    font-size: 45px;
-    color: #FFFFFF;
-    margin: 0 0 8px 0;
-  }
-
-  p {
-    font-size: 14px;
-    color: #B0B0B0;
-    margin: 0;
-  }
-`;
-
-export const ChartContainer = styled.div`
-  display: flex;
-  gap: 32px;
-  width: 100%;
-  justify-content: center;
-  max-width: 1100px;
-  flex-wrap: wrap;
-`;
-
-const BaseChart = styled.div`
-  background-color: #202024;
-  padding: 24px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  color: #E0E0E0;
-  width: 400px;
-  min-width: 320px;
-  height: 260px;
-  justify-content: flex-start;
-
-  h4 {
-    font-size: 16px;
-    color: #F0F0F0;
-    margin: 0 0 8px 0;
-    font-weight: 600;
-  }
-
-  .chart-subtitle {
-    font-size: 13px;
-    color: #A0A0A0;
-    margin-bottom: 16px;
-  }
-`;
-
-export const PieChart = styled(BaseChart)``;
-export const LineChart = styled(BaseChart)``;
-
 export const ContentWrapper = styled.div`
   width: 100%;
   min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 40px;
+  padding: 32px 24px 40px 24px;
   box-sizing: border-box;
+  overflow-x: hidden;
 `;
 
-export const DashboardRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  width: 100%;
-  max-width: 1100px;
-  justify-content: center;
-  align-items: center;
-  margin-top: 32px;
-`;
 
 export const NotificationsModal = styled.div`
   position: absolute;
