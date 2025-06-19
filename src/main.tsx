@@ -16,6 +16,7 @@ import { PrivateRoute } from './routes/privateRoutes';
 
 import 'leaflet/dist/leaflet.css';
 import TrashDetail from '@pages/TrashDetails';
+import AllNotifications from '@pages/AllNotifications';
 
 injectGlobalStyles();
 
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="profile" element={<Profile />} />
             <Route path="map" element={<Map />} />
             <Route path="/trash/:id" element={<TrashDetail />} />
+            <Route path="notifications" element={<AllNotifications />} />
           </Route>
 
           {/* Rota fallback */}
